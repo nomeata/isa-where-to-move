@@ -1,0 +1,5 @@
+theory Where_To_Move_Ex3
+imports Where_To_Move_Ex1 Where_To_Move_Ex2
+begin
+
+end
