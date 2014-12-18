@@ -79,7 +79,7 @@ Seening this, my usual thoughts would be
  * `foobar` cannot go to either `Where_To_Move_Ex1` nor `Where_To_Move_Ex2`. But it still
    is not at a proper spot right now: The theory `Where_To_Move_Ex3` is more suitable.
  * `foobar2` is, upon first glance, at the right spot, as it uses `fooI2` and
-   `barE2` from this module. ''If'' I would move `fooI2` and `barE2`, I would also be
+   `barE2` from this module. *If* I would move `fooI2` and `barE2`, I would also be
    able to move `foobar2`, but maybe I will not do that, so for now `foobar2`
    stays where it is.
 
@@ -113,11 +113,11 @@ Usage
    find the first (i.e. most primitive) theory that contains all theories of
    all lemmas used by the theorem in question.
 
- * `where_to_move` ''thm''
+ * `where_to_move` *thm*
 
    The same, but for a specific theorem only.
 
- * `theorems_used_by` ''thm''
+ * `theorems_used_by` *thm*
 
    Prints all theorems used by the given theorems. Can be useful to understand
    why `where_to_move` suggests a particular choice.
