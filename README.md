@@ -136,8 +136,14 @@ These are the ones that I know about. If you have more, feel free to open an iss
  * Using `where_to_move OtherTheory.bar` will print `Theorem OtherTheory.bar
    could be moved to theory "OtherTheory"`, which is not wrong, but slighly
    unhelpful.
+ * The interaction with locales is unexplored.
+ * Typing commands is an out-dated interface. Ideally, after activating this tool,
+   every proven lemma would be checked in the background and some wiggly lines would
+   indicate that this lemma could live somewhere else, similar to how `solve_direct` and
+   `nitpick` are run automatically.
  * The ML code could use some code review from someone more experienced with
    SML and Isabelle/ML.
+   
  
 
 
