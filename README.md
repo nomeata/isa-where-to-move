@@ -141,6 +141,9 @@ These are the ones that I know about. If you have more, feel free to open an iss
    every proven lemma would be checked in the background and some wiggly lines would
    indicate that this lemma could live somewhere else, similar to how `solve_direct` and
    `nitpick` are run automatically.
+ * The installation suggestions make you enter the full path to the theory file
+   everytime you use it. Maybe it is possible to avoid this by registering this as
+   an *component*, but I could not make that work right away.
  * The ML code could use some code review from someone more experienced with
    SML and Isabelle/ML.
    
