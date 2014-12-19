@@ -57,12 +57,15 @@ fun better_theory thys this_thy =
   |> find_first  (ok_for thys);
 
 
+fun pretty_fact ctxt name =
+  Pretty.mark (#1 (Proof_Context.markup_extern_fact ctxt name)) (Pretty.str name)
+
 fun theorems_used_by_cmd arg = Toplevel.keep (fn state =>
     let val ctxt = Toplevel.context_of state
         val thy = Toplevel.theory_of state
         val (_, thms) =  Facts.retrieve (Context.Proof ctxt) (Global_Theory.facts_of thy) arg
     in thms |> maps thms_used_by_thm
-            |> map (Pretty.mark_str o Proof_Context.markup_extern_fact ctxt)
+            |> map (pretty_fact ctxt)
             |> Pretty.commas
             |> Pretty.paragraph
             |> Pretty.writeln
@@ -106,7 +109,7 @@ fun where_to_move_cmd args_o =
             SOME args => (true, args |> map (Facts.retrieve (Context.Proof ctxt) (Global_Theory.facts_of this_thy)))
             | NONE =>    (false, facts_of_theory this_thy)
     in named_thms |> map (fn (name, thms) =>
-      let val pretty_name = Proof_Context.markup_extern_fact ctxt name |> Pretty.mark_str |> Pretty.quote
+      let val pretty_name = name |> pretty_fact ctxt |> Pretty.quote
       in case better_theory (theories_used_by_thms this_thy thms) this_thy of
           SOME thy =>
            [ Pretty.str "Theorem ", pretty_name,
