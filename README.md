@@ -139,6 +139,8 @@ These are the ones that I know about. If you have more, feel free to open an iss
  * In the output of `theorems_used_by`, if a theorem is actually a list of
    them, and one is used, it prints the selector as part of the name
    (`HOL.simp_thms_7`), which breaks the hyperlinking.
+ * It might suggest moving a theorem that mentions a type from the current
+   theory (but no lemma or constant) to another theory.
  * Using `where_to_move OtherTheory.bar` will print `Theorem OtherTheory.bar
    could be moved to theory "OtherTheory"`, which is not wrong, but slighly
    unhelpful.
