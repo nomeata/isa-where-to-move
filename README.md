@@ -135,7 +135,6 @@ These are the ones that I know about. If you have more, feel free to open an iss
  * In the output of `theorems_used_by`, if a theorem is actually a list of
    them, and one is used, it prints the selector as part of the name
    (`HOL.simp_thms_7`), which breaks the hyperlinking.
- * Theory names are not clickable yet.
  * Definitions should be treated specially. Naturally, most `foo_def` lemmas can be moved to
    `HOL` (they are (derived from) axioms, after all), but I usually do not want to
    move definitions.

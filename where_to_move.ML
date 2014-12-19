@@ -78,12 +78,13 @@ fun where_to_move_cmd args_o =
             SOME args => (true, args |> map (Facts.retrieve (Context.Proof ctxt) (Global_Theory.facts_of this_thy)))
             | NONE =>    (false, facts_of_theory this_thy)
     in named_thms |> map (fn (name, thms) =>
-      let val pretty_name = Pretty.mark_str (Proof_Context.markup_extern_fact ctxt name)
+      let val pretty_name = Proof_Context.markup_extern_fact ctxt name |> Pretty.mark_str |> Pretty.quote
       in case better_theory (theories_used_by_thms this_thy thms) this_thy of
           SOME thy =>
            [ Pretty.str "Theorem ", pretty_name,
              Pretty.str " could be moved to theory ",
-             Pretty.quote (Pretty.str (Context.theory_name thy)), Pretty.str "."
+             Pretty.quote (Pretty.mark_str (Theory.get_markup thy, Context.theory_name thy)),
+             Pretty.str "."
            ] |> Pretty.paragraph |> Pretty.writeln
         | NONE =>
           if verbose then
