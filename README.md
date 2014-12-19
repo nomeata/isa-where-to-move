@@ -89,10 +89,14 @@ Example use
 If I enter the command `where_to_move` at the end of the theory
 `Where_To_Move_Ex4`, I will be given this somewhat helpful output:
 
-    Theorem Where_To_Move_Ex4.barE2 could be moved to theory "Where_To_Move_Ex2". 
-    Theorem Where_To_Move_Ex4.fooI2 could be moved to theory "Where_To_Move_Ex1". 
-    Theorem Where_To_Move_Ex4.foobar could be moved to theory "Where_To_Move_Ex3". 
-    Theorem Where_To_Move_Ex4.foobar2 is fine where it is
+    Theorem barE2 could be moved to theory "Where_To_Move_Ex2". 
+    Theorem fooI2 could be moved to theory "Where_To_Move_Ex1". 
+    Theorem foobar could be moved to theory "Where_To_Move_Ex3". 
+
+The output did not mention `foobar2`, but if I expliclty ask for it to be
+checked using `where_to_move foobar2` I get
+
+    Theorem foobar2 is fine where it is.
 
 Installation
 ------------

@@ -18,5 +18,6 @@ lemma foobar2: "foo \<and> \<not> bar"
   done
 
 where_to_move
+where_to_move foobar2
 
 end

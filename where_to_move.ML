@@ -74,9 +74,9 @@ fun where_to_move_cmd args_o =
   Toplevel.keep ( fn state =>
     let val ctxt = Toplevel.context_of state
         val this_thy = Toplevel.theory_of state
-        val named_thms = case args_o of
-            SOME args => args |> map (Facts.retrieve (Context.Proof ctxt) (Global_Theory.facts_of this_thy))
-            | NONE => facts_of_theory this_thy
+        val (verbose, named_thms) = case args_o of
+            SOME args => (true, args |> map (Facts.retrieve (Context.Proof ctxt) (Global_Theory.facts_of this_thy)))
+            | NONE =>    (false, facts_of_theory this_thy)
     in named_thms |> map (fn (name, thms) =>
       let val pretty_name = Pretty.mark_str (Proof_Context.markup_extern_fact ctxt name)
       in case better_theory (theories_used_by_thms this_thy thms) this_thy of
@@ -84,11 +84,13 @@ fun where_to_move_cmd args_o =
            [ Pretty.str "Theorem ", pretty_name,
              Pretty.str " could be moved to theory ",
              Pretty.quote (Pretty.str (Context.theory_name thy)), Pretty.str "."
-           ]
+           ] |> Pretty.paragraph |> Pretty.writeln
         | NONE =>
+          if verbose then
            [ Pretty.str "Theorem ", pretty_name,
-             Pretty.str" is fine where it is."]
-      end |> Pretty.paragraph |> Pretty.writeln
+             Pretty.str" is fine where it is."] |> Pretty.paragraph |> Pretty.writeln
+          else ()
+      end
     ) |> K ()
    end
    );
