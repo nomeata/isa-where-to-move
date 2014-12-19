@@ -110,7 +110,9 @@ fun where_to_move_cmd args_o =
             | NONE =>    (false, facts_of_theory this_thy)
     in named_thms |> map (fn (name, thms) =>
       let val pretty_name = name |> pretty_fact ctxt |> Pretty.quote
-      in case better_theory (theories_used_by_thms this_thy thms) this_thy of
+          val current_thy_name = name |> (hd o Long_Name.explode)
+          val current_thy = Context.this_theory this_thy current_thy_name
+      in case better_theory (theories_used_by_thms this_thy thms) current_thy of
           SOME thy =>
            [ Pretty.str "Theorem ", pretty_name,
              Pretty.str " could be moved to theory ",
