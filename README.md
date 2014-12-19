@@ -41,7 +41,7 @@ Consider these four files:
     lemma barE: "bar ==> P" unfolding bar_def by (erule FalseE)
 
     end
- 
+
 
     theory Where_To_Move_Ex3
     imports Where_To_Move_Ex1 Where_To_Move_Ex2
@@ -51,7 +51,7 @@ Consider these four files:
 
 
     theory Where_To_Move_Ex4
-    imports Where_To_Move_Ex3 WhereToMove 
+    imports Where_To_Move_Ex3 WhereToMove
     begin
 
     lemma fooI2: "foo" by (rule fooI)
@@ -89,9 +89,9 @@ Example use
 If I enter the command `where_to_move` at the end of the theory
 `Where_To_Move_Ex4`, I will be given this somewhat helpful output:
 
-    Theorem barE2 could be moved to theory "Where_To_Move_Ex2". 
-    Theorem fooI2 could be moved to theory "Where_To_Move_Ex1". 
-    Theorem foobar could be moved to theory "Where_To_Move_Ex3". 
+    Theorem barE2 could be moved to theory "Where_To_Move_Ex2".
+    Theorem fooI2 could be moved to theory "Where_To_Move_Ex1".
+    Theorem foobar could be moved to theory "Where_To_Move_Ex3".
 
 The output did not mention `foobar2`, but if I expliclty ask for it to be
 checked using `where_to_move foobar2` I get
@@ -109,7 +109,7 @@ Usage
 -----
 
  * `where_to_move`
- 
+
    For all lemmas defined in the current module, give an indication where it should be
    moved.
 
@@ -125,12 +125,12 @@ Usage
 
    Prints all theorems used by the given theorems. Can be useful to understand
    why `where_to_move` suggests a particular choice.
- 
+
 
 Bugs and shortcomings
 ---------------------
 
-These are the ones that I know about. If you have more, feel free to open an issue. 
+These are the ones that I know about. If you have more, feel free to open an issue.
 
  * In the output of `theorems_used_by`, if a theorem is actually a list of
    them, and one is used, it prints the selector as part of the name
@@ -152,7 +152,7 @@ These are the ones that I know about. If you have more, feel free to open an iss
    an *component*, but I could not make that work right away.
  * The ML code could use some code review from someone more experienced with
    SML and Isabelle/ML.
-   
+
  
 
 
