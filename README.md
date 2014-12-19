@@ -114,8 +114,8 @@ Usage
    moved.
 
    The logic is as follows: In the list of dependencies of the current theory,
-   find the first (i.e. most primitive) theory that contains all theories of
-   all lemmas used by the theorem in question.
+   find the first (i.e. most primitive) theory that already contains all
+   constants occurring in the theorem, and all lemmas occurring in its proof.
 
  * `where_to_move` *thm*
 
@@ -126,6 +126,10 @@ Usage
    Prints all theorems used by the given theorems. Can be useful to understand
    why `where_to_move` suggests a particular choice.
 
+ * `constants_used_by` *thm*
+
+   Prints all constants occuring in a given theorem.
+
 
 Bugs and shortcomings
 ---------------------
@@ -135,9 +139,6 @@ These are the ones that I know about. If you have more, feel free to open an iss
  * In the output of `theorems_used_by`, if a theorem is actually a list of
    them, and one is used, it prints the selector as part of the name
    (`HOL.simp_thms_7`), which breaks the hyperlinking.
- * Definitions should be treated specially. Naturally, most `foo_def` lemmas can be moved to
-   `HOL` (they are (derived from) axioms, after all), but I usually do not want to
-   move definitions.
  * Using `where_to_move OtherTheory.bar` will print `Theorem OtherTheory.bar
    could be moved to theory "OtherTheory"`, which is not wrong, but slighly
    unhelpful.

@@ -1,6 +1,7 @@
 theory Where_To_Move
 imports Pure
 keywords "theorems_used_by" :: diag
+     and "constants_used_by" :: diag
      and "where_to_move" :: diag
 begin
 

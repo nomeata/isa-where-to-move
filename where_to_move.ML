@@ -7,9 +7,11 @@ Utility commands to suggest lemma reorganisations.
 signature WHERE_TO_MOVE =
 sig
   val thms_used_by_thm : thm -> string list
+  val constants_used_by_thm : thm -> string list
   val theories_used_by_thm : theory -> thm -> theory list
   val theories_used_by_thms : theory -> thm list -> theory list
 
+  val constants_used_by_cmd : (string * Position.T) -> Toplevel.transition -> Toplevel.transition
   val theorems_used_by_cmd : (string * Position.T) -> Toplevel.transition -> Toplevel.transition
   val where_to_move_cmd : (string * Position.T) list option -> Toplevel.transition -> Toplevel.transition
 end
@@ -25,19 +27,23 @@ fun thms_used_by_thm thm =
   in thm |> Thm.proof_body_of |> Proofterm.strip_thm |> used_by_proof_body
   end;
 
+fun constants_used_by_thm thm =
+  let val term = Thm.prop_of thm
+      val consts = Term.add_const_names term []
+  in consts
+  end;
+
 fun nub ss = fold (fn x => Symtab.update (x, ())) ss Symtab.empty |> Symtab.keys;
 
-fun theories_used_by_thm thy thm =
-      thm |> thms_used_by_thm 
-          |> map (hd o Long_Name.explode) 
-          |> nub 
-          |> map (Context.this_theory thy);
+fun theories_used_by_thms thy thm =
+  let val thms = maps thms_used_by_thm thm
+      val consts = maps constants_used_by_thm thm
+      val theory_names = thms @ consts |> map (hd o Long_Name.explode) |> nub
+      val theories = theory_names |> map (Context.this_theory thy) 
+  in theories
+  end
 
-fun theories_used_by_thms thy thms =
-      thms |> maps thms_used_by_thm
-           |> map (hd o Long_Name.explode) 
-           |> nub 
-           |> map (Context.this_theory thy);
+fun theories_used_by_thm thy thm = theories_used_by_thms thy [thm]
 
 
 fun ok_for thys thy =
@@ -64,11 +70,33 @@ fun theorems_used_by_cmd arg = Toplevel.keep (fn state =>
     );
 
 
+fun pretty_const ctxt c =
+  let
+    val const_space = Consts.space_of (Sign.consts_of (Proof_Context.theory_of ctxt));
+    val markup = Name_Space.markup const_space c;
+  in
+    Pretty.mark markup (Pretty.str c)
+  end;
+
+fun constants_used_by_cmd arg = Toplevel.keep (fn state =>
+    let val ctxt = Toplevel.context_of state
+        val thy = Toplevel.theory_of state
+        val (_, thms) =  Facts.retrieve (Context.Proof ctxt) (Global_Theory.facts_of thy) arg
+    in thms |> maps constants_used_by_thm
+            |> map (pretty_const ctxt)
+            |> Pretty.commas
+            |> Pretty.paragraph
+            |> Pretty.writeln
+    end
+    );
+
+
 fun facts_of_theory thy =
   let val prev_thys = (Theory.parents_of thy) 
       val facts = Global_Theory.facts_of thy
       val thms =  Facts.dest_static false (map Global_Theory.facts_of prev_thys) facts
   in thms end;
+
 
 fun where_to_move_cmd args_o =
   Toplevel.keep ( fn state =>
@@ -100,6 +128,10 @@ fun where_to_move_cmd args_o =
 val _ = Outer_Syntax.improper_command @{command_spec "theorems_used_by"} 
     "prints all theorems used by the given theorem"
     (Parse.position Parse.xname >> theorems_used_by_cmd);
+
+val _ = Outer_Syntax.improper_command @{command_spec "constants_used_by"} 
+    "prints all constants occurring in the given theorem"
+    (Parse.position Parse.xname >> constants_used_by_cmd);
 
 val _ = Outer_Syntax.improper_command @{command_spec "where_to_move"}
     "suggests a new location for the given theorem or, of none is given, all theorems in the current theory"
