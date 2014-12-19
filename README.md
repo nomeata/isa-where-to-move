@@ -141,6 +141,7 @@ These are the ones that I know about. If you have more, feel free to open an iss
    (`HOL.simp_thms_7`), which breaks the hyperlinking.
  * It might suggest moving a theorem that mentions a type from the current
    theory (but no lemma or constant) to another theory.
+ * It is confused by interpretations, and may suggest moving interpreted lemmas.
  * Typing commands is an out-dated interface. Ideally, after activating this tool,
    every proven lemma would be checked in the background and some wiggly lines would
    indicate that this lemma could live somewhere else, similar to how `solve_direct` and
